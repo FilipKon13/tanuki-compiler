@@ -14,14 +14,6 @@ public:
     virtual ~Printable() = default;
 };
 
-// template<typename Arg, typename... Parsers>
-// bool parse_alternative(Arg && arg, Parsers && ... parsers) {
-//     return ([&res, &arg](auto && parser){
-//         res = parser(arg);
-//         return res.has_value();
-//     }(parsers) || ...);
-// }
-
 template<typename T, typename... Types>
 bool is_same(T && type, std::variant<Types...> const & val) {
     const auto * ptr = std::get_if<typename std::remove_cv_t<typename std::remove_reference_t<T>>>(&val);
