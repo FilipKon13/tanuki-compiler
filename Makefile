@@ -12,5 +12,6 @@ all: $(TARGETS)
 $(OUTDIR)/tnk2js: $(SRCDIR)/compile.cpp $(SRCDIR)/compile.hpp $(SRCDIR)/compilable_types.hpp $(SRCDIR)/parser.hpp $(SRCDIR)/tokenizer.hpp $(SRCDIR)/util.hpp
 	$(CXX) $(CXXFLAGS) -o $@ $<
 
-$(OUTDIR)/json2js:
-	echo TODO $@
+$(OUTDIR)/json2js: $(SRCDIR)/json2js.cpp 
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $@ $<
+

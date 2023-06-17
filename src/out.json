@@ -1,0 +1,68 @@
+[
+    {
+        "data": {},
+        "dragging": false,
+        "height": 60,
+        "id": "0",
+        "position": {
+            "x": 39,
+            "y": -120.50000000000001
+        },
+        "positionAbsolute": {
+            "x": 39,
+            "y": -120.50000000000001
+        },
+        "selected": false,
+        "type": "scriptStart",
+        "width": 167
+    },
+    {
+        "data": {
+            "line": "load('https://developers.google.com/web/')"
+        },
+        "dragging": false,
+        "height": 79,
+        "id": "1",
+        "position": {
+            "x": -61.5,
+            "y": 7.5
+        },
+        "positionAbsolute": {
+            "x": -61.5,
+            "y": 7.5
+        },
+        "selected": false,
+        "type": "scriptLine",
+        "width": 289
+    },
+    {
+        "data": {
+            "line": "type('.devsite-search-field', 'Headless Chrome')"
+        },
+        "dragging": false,
+        "height": 79,
+        "id": "2",
+        "position": {
+            "x": -61.5,
+            "y": 107.5
+        },
+        "selected": false,
+        "type": "scriptLine",
+        "width": 289
+    },
+    {
+        "data": {
+            "line": "press('Enter')"
+        },
+        "dragging": false,
+        "height": 79,
+        "id": "3",
+        "position": {
+            "x": -61.5,
+            "y": 207.5
+        },
+        "selected": false,
+        "type": "scriptLine",
+        "width": 289
+    }
+]
