@@ -1,7 +1,7 @@
 SRCDIR = src
 OUTDIR = out
 
-CXXFLAGS = -std=c++17 -Wall -Werror -O3
+CXXFLAGS = -std=c++17 -Wall -Werror -O3 -g
 CXX = g++
 INCLUDES = -Ijson/external/PEGTL/include -Ijson/include/
 

@@ -236,12 +236,13 @@ class Tokenizer : private std::string_view {
     }
 
     bool read_operator() {
-        constexpr static decltype(auto) opers = "+-*/%=<>";
+        constexpr static decltype(auto) opers = "!+-*/%=<>";
         auto is_oper_char = [&](char z) {return std::find(std::begin(opers), std::end(opers), z) != std::end(opers);};
         auto is_operator = [](std::string_view s) -> std::optional<OperatorToken> {
             for(auto & oper : OperatorToken::operators) {
                 if(s == oper.repr()) return oper;
             }
+            std::cerr << "s: " << s << '\n';
             return std::nullopt;
         };
         auto beg = it;

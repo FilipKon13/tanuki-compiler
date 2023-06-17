@@ -59,11 +59,11 @@ void Compilator::compile(const FunctionCall & function_call) {
         statements.emplace_back(");");
         return;
     }
-    if(name == "=") { // TODO fix infix functions (operators)
+    if(name == "=" || name == "+" || name == "-" || name == "*" || name == "/" || name == "==" || name == "!=" || name == "+=" || name == "-=" || name == "*=" || name == "/=") { // TODO fix infix functions (operators)
         function_call.args[0]->compile(*this);
-        statements.emplace_back(" = ");
+        statements.emplace_back(" " + name + " ");
         function_call.args[1]->compile(*this);
-        statements.emplace_back(";");
+        // statements.emplace_back(";");
         return;
     }
     statements.emplace_back("await page." + function_call.function.get().name + '(');
@@ -92,6 +92,14 @@ void Compilator::compile(const ForEachLoop & loop) {
     statements.emplace_back(")");
     statements.emplace_back("\n");
     loop.scope->compile(*this);
+}
+
+void Compilator::compile(const IfStatement & if_statement) {
+    statements.emplace_back("if (");
+    if_statement.condition->compile(*this);
+    statements.emplace_back(")");
+    statements.emplace_back("\n");
+    if_statement.scope->compile(*this);
 }
 
 std::vector<std::string> Compilator::get_code() {

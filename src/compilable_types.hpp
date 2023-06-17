@@ -7,7 +7,7 @@ class VariableExpression;
 class FunctionCall;
 class Array;
 class ForEachLoop;
-
+class IfStatement;
 
 class Compilator {
     std::vector<std::string> statements;
@@ -18,6 +18,7 @@ public:
     void compile(const FunctionCall &);
     void compile(const Array &);
     void compile(const ForEachLoop &);
+    void compile(const IfStatement &);
     std::vector<std::string> get_code();
 };
 

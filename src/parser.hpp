@@ -152,6 +152,20 @@ public:
     std::unique_ptr<Scope> scope;
 };
 
+class IfStatement : public StatementImpl<IfStatement> {
+public:
+    std::unique_ptr<Expression> condition;
+    std::unique_ptr<Scope> scope;
+    void print(std::ostream &s, std::string const & prev) const override {
+        s << prev << "IF: ";
+        condition->print(s, "");
+        s << '\n';
+        s << "Scope: \n";
+        scope->print(s, "");
+        s << '\n';
+    }
+};
+
 
 class Prog_AST : public Printable {
 public:
@@ -383,6 +397,15 @@ class Parser : private TokenSequence {
             ++from;
             if(!(loop->scope = parse_braces(from, to, parent))) throw std::string("Syntax error");
             return loop;
+        } else if(is_same(KeywordToken::IF, *from)) {
+            std::unique_ptr<IfStatement> if_statement = std::make_unique<IfStatement>();
+            ++from;
+            if(!is_same(ControlToken::LO, *from)) throw std::string("If syntax error");
+            ++from;
+            if(!(if_statement->condition = parse_expression(from, to, {ControlToken::RO, ControlToken::END}))) throw std::string("If syntax error");
+            ++from;
+            if(!(if_statement->scope = parse_braces(from, to, parent))) throw std::string("Syntax error");
+            return if_statement;
         }
         return nullptr;
     }

@@ -1,0 +1,9 @@
+load('www.google.com')
+if (a == 3) {
+    load('www.google.com')
+    load('www.google.com')
+    load('www.google.com')
+    press('Enter')
+}
+load('www.google.com')
+load('www.google.com')
