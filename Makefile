@@ -5,7 +5,7 @@ CXXFLAGS = -std=c++17 -Wall -Werror -O3 -g
 CXX = g++
 INCLUDES = -Ijson/external/PEGTL/include -Ijson/include/
 
-TARGETS = $(OUTDIR)/tnk2js $(OUTDIR)/json2js $(OUTDIR)/tnk2json
+TARGETS = $(OUTDIR)/tnk2js $(OUTDIR)/json2js $(OUTDIR)/tnk2json $(OUTDIR)/json2tnk
 
 all: outdir $(TARGETS)
 	
@@ -20,5 +20,8 @@ $(OUTDIR)/json2js: $(SRCDIR)/json2js.cpp
 
 $(OUTDIR)/tnk2json: $(SRCDIR)/tnk2json.cpp 
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $@ $<
+
+$(OUTDIR)/json2tnk: $(SRCDIR)/json2tnk.cpp 
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $@ $<	
 
 .PHONY: all outdir

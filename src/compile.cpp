@@ -1,9 +1,11 @@
 #include <iostream>
 #include "compile.hpp"
 
-int main() {
+int main(int argc, char * argv[]) {
     using namespace std;
-    string s = read_input();
+    ifstream input(argv[1]);
+    string s = read_input(input);
+    cerr << s << '\n';
     // cout << Parser(Tokenizer(s).tokenize()).parse() << '\n';
     auto tree = Parser(Tokenizer(s).tokenize()).parse();
     cerr << tree << '\n';

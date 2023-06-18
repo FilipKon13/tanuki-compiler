@@ -66,7 +66,6 @@ JSON parse_tnk(std::ifstream & file) {
 }
 
 int main(int argc, char * argv[]) {
-    // const JSON v = tao::json::from_file( "src/file.json" );
     std::ifstream input(argv[1]);
     tao::json::to_stream( std::cout, parse_tnk(input) , 4);
     return 0;

@@ -2,6 +2,7 @@
 #define TANUKI_UTIL_HPP_
 #include <ostream>
 #include <functional>
+#include <fstream>
 #include <variant>
 
 class Printable {
@@ -31,9 +32,9 @@ std::ostream & operator<<(std::ostream & s, std::variant<T...> const & v) {
     return s;
 }
 
-std::string read_input() {
+std::string read_input(std::ifstream & file) {
     std::string res;
-    std::getline(std::cin, res, '\0');
+    std::getline(file, res, '\0');
     return res;
 }
 

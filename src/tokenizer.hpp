@@ -156,7 +156,7 @@ class Tokenizer : private std::string_view {
 
     bool read_white() {
         char z = *it;
-        if(z == ' ' || z == '\t') {
+        if(z == ' ' || z == '\t' || z == '\r') {
             ++it;
             return true;
         }
@@ -242,7 +242,6 @@ class Tokenizer : private std::string_view {
             for(auto & oper : OperatorToken::operators) {
                 if(s == oper.repr()) return oper;
             }
-            std::cerr << "s: " << s << '\n';
             return std::nullopt;
         };
         auto beg = it;
@@ -273,14 +272,14 @@ public:
     ~Tokenizer() = default;
 
     TokenSequence tokenize() {
-        try {
+        // try {
         while(it != end()) {
             get_token();
         }
-        } catch(...) {
-            result.emplace_back(NameToken{"ERROR"});
-            return result;
-        }
+        // } catch(...) {
+            // result.emplace_back(NameToken{"ERROR"});
+            // return result;
+        // }
         result.emplace_back(ControlToken::END);
         return result;
     }
