@@ -204,21 +204,21 @@ class Parser : private TokenSequence {
         functions.emplace("F", std::make_unique<DefFunction>(std::move(fun)));
         }
         {
-        DefFunction fun("goto");
+        DefFunction fun("load");
         fun.args = {"page_address"};
         fun.arity = 1;
         fun.priority = 4;
         functions.emplace("load", std::make_unique<DefFunction>(std::move(fun)));
         }
         {
-        DefFunction fun("type");
+        DefFunction fun("typeXPath");
         fun.args = {"where", "what"};
         fun.arity = 2;
         fun.priority = 4;
         functions.emplace("type", std::make_unique<DefFunction>(std::move(fun)));
         }
         {
-        DefFunction fun("click");
+        DefFunction fun("clickXPath");
         fun.args = {"what"};
         fun.arity = 1;
         fun.priority = 4;
@@ -246,13 +246,40 @@ class Parser : private TokenSequence {
         functions.emplace("getText", std::make_unique<DefFunction>(std::move(fun)));
         }
         {
-        DefFunction fun("keyboard.press");
+        DefFunction fun("press");
         fun.args = {"what"};
         fun.arity = 1;
         fun.priority = 4;
         functions.emplace("press", std::make_unique<DefFunction>(std::move(fun)));
         }
-        
+        {
+        DefFunction fun("waitForXPath");
+        fun.args = {"what"};
+        fun.arity = 1;
+        fun.priority = 4;
+        functions.emplace("waitFor", std::make_unique<DefFunction>(std::move(fun)));
+        }
+        {
+        DefFunction fun("wait");
+        fun.args = {"miliseconds"};
+        fun.arity = 1;
+        fun.priority = 4;
+        functions.emplace("wait", std::make_unique<DefFunction>(std::move(fun)));
+        }
+        {
+        DefFunction fun("clickContaining");
+        fun.args = {"what"};
+        fun.arity = 1;
+        fun.priority = 4;
+        functions.emplace("clickContaining", std::make_unique<DefFunction>(std::move(fun)));
+        }
+        {
+        DefFunction fun("native");
+        fun.args = {"code_line"};
+        fun.arity = 1;
+        fun.priority = 4;
+        functions.emplace("native", std::make_unique<DefFunction>(std::move(fun)));
+        }   
     }
 
     bool parse_end(iter & it) {

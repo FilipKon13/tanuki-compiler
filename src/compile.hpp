@@ -8,7 +8,62 @@
 #include "parser.hpp"
 #include "util.hpp"
 
-std::string pref = "const puppeteer = require('puppeteer');\n\nasync function start() {\n\tconst browser = await puppeteer.launch({headless: false});\n\tconst page = await browser.newPage();\n\tasync function getText(XPath) {\n\t\tawait page.waitForXPath(XPath, {timeout:0});\n\t\tconst [getXpath] = await page.$x(XPath);\n\t\treturn await page.evaluate(name => name.textContent, getXpath);\n\t}\n";
+std::string pref = R"""(
+const puppeteer = require('puppeteer');
+async function start() {
+    const browser = await puppeteer.launch({headless: false});
+    const page = await browser.newPage();
+    async function clickXPath(xPath) {
+    const [el] = await page.$x(xPath);
+    await el.click();
+  };
+
+  async function clickTimes(xPath, times) {
+    const [el] = await page.$x(xPath);
+    await el.click({clickCount: times});
+  }
+
+  async function clickContaining(text) {
+    await clickXPath(`//*[contains(text(), "${text}")]`);
+  };
+
+  async function typeXPath(xPath, text) {
+      const [el] = await page.$x(xPath);
+      await el.type(text);
+  }
+
+  async function waitForXPath(xPath) {
+    await page.waitForXPath(xPath, {timeout: 0});
+  }
+
+  async function load(url) {
+    await page.goto(url);
+  }
+
+  async function press(key) {
+    await page.keyboard.press(key);
+  }
+
+  async function getText(XPath) {
+    await page.waitForXPath(XPath, {timeout:0})
+    const [getXpath] = await page.$x(XPath);
+    return await page.evaluate(name => name.textContent, getXpath);
+  }
+
+  async function wait(milis) {
+    await page.waitForTimeout(milis);
+  }
+
+  async function print(smth) {
+    console.log(smth);
+  }
+
+  async function repeat(times, fun) {
+    for(let i = 0; i < times; ++i) {
+      fun();
+    }
+  }
+)""";
 std::string suf = "\n}\n\nexports.start = start;";
 
 /* Compiler implementation */ 
@@ -39,25 +94,15 @@ void Compilator::compile(const VariableExpression & expression) {
 
 void Compilator::compile(const FunctionCall & function_call) {
     auto & name = function_call.function.get().name;
-    if(name == "clickTimes") { //  await page.click('#pow', {clickCount: 3})
-        statements.emplace_back("await page.click(");
-        function_call.args[0]->compile(*this);
-        statements.emplace_back(", {clickCount: ");
-        function_call.args[1]->compile(*this);
-        statements.emplace_back("});");
-        return;
-    }
     if(name == "print") {
         statements.emplace_back("console.log(");
         function_call.args[0]->compile(*this);
         statements.emplace_back(");");
         return;
     }
-    if(name == "getText") {
-        statements.emplace_back("await getText(");
-        function_call.args[0]->compile(*this);
-        statements.emplace_back(");");
-        return;
+    if(name == "native") {
+        statements.emplace_back(std::get<LiteralToken>(dynamic_cast<LiteralExpression &>(*function_call.args[0])).repr());
+        statements.emplace_back("\n");
     }
     if(name == "=" || name == "+" || name == "-" || name == "*" || name == "/" || name == "==" || name == "!=" || name == "+=" || name == "-=" || name == "*=" || name == "/=") { // TODO fix infix functions (operators)
         function_call.args[0]->compile(*this);
@@ -66,7 +111,7 @@ void Compilator::compile(const FunctionCall & function_call) {
         // statements.emplace_back(";");
         return;
     }
-    statements.emplace_back("await page." + function_call.function.get().name + '(');
+    statements.emplace_back("await " + function_call.function.get().name + "(");
     function_call.args[0]->compile(*this);
     for(int i=1;i<function_call.function.get().arity;++i) {
         statements.emplace_back(", ");
