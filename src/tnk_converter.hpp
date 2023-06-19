@@ -25,6 +25,8 @@ void TNKConverter::compile(JSON const & v) {
         if(type == "start")         compileScriptStart(o);
         else if(type == "load")     compileLoad(o);
         else if(type == "press")    compilePress(o);
+        else if(type == "scriptLine") compileScriptLine(o);
+        else if(type == "scriptStart") compileScriptStart(o);
         else throw std::string("Unknown node type");
     }
 }
