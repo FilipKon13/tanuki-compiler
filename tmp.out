@@ -1,0 +1,63 @@
+
+const puppeteer = require('puppeteer');
+async function start() {
+    const browser = await puppeteer.launch({headless: false});
+    const page = await browser.newPage();
+    async function clickXPath(xPath) {
+    const [el] = await page.$x(xPath);
+    await el.click();
+  };
+
+  async function clickTimes(xPath, times) {
+    const [el] = await page.$x(xPath);
+    await el.click({clickCount: times});
+  }
+
+  async function clickContaining(text) {
+    await clickXPath(`//*[contains(text(), "${text}")]`);
+  };
+
+  async function typeXPath(xPath, text) {
+      const [el] = await page.$x(xPath);
+      await el.type(text);
+  }
+
+  async function waitForXPath(xPath) {
+    await page.waitForXPath(xPath, {timeout: 0});
+  }
+
+  async function load(url) {
+    await page.goto(url);
+  }
+
+  async function press(key) {
+    await page.keyboard.press(key);
+  }
+
+  async function getText(XPath) {
+    await page.waitForXPath(XPath, {timeout:0})
+    const [getXpath] = await page.$x(XPath);
+    return await page.evaluate(name => name.textContent, getXpath);
+  }
+
+  async function wait(milis) {
+    await page.waitForTimeout(milis);
+  }
+
+  async function print(smth) {
+    console.log(smth);
+  }
+
+  async function repeat(times, fun) {
+    for(let i = 0; i < times; ++i) {
+      fun();
+    }
+  }
+
+	await load('https://google.com/');
+	await clickXPath('/html/body/div[2]/div[3]/div[3]/span/div/div/div/div[3]/div[1]/button[2]');
+	await typeXPath('/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/textarea', 'Tanuki');
+	await clickXPath('/html/body/div[1]/div[3]/form/div[1]/div[1]/div[4]/center/input[1]');
+}
+
+exports.start = start;
